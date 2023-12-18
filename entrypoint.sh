@@ -13,9 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+URL=https://developer.nasa.gov
+# /runner/config.sh --url https://developer.nasa.gov/javilla8/madi --token AAAARDYM7KHIFP22L633GVDFN56D2
+
 #remove runner on stop signal
 remove_runner() {
-    /runner/config.sh remove --unattended --token "$(curl -sS --request POST --url "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/runners/remove-token" --header "authorization: Bearer ${GITHUB_TOKEN}"  --header "content-type: application/json" | jq -r .token)"
+    /runner/config.sh remove --unattended --token "$(curl -sS --request POST --url "${URL}/repos/${REPO_OWNER}/${REPO_NAME}/actions/runners/remove-token" --header "authorization: Bearer ${GITHUB_TOKEN}"  --header "content-type: application/json" | jq -r .token)"
     exit 0
 }
 
@@ -30,8 +33,13 @@ trap 'remove_runner' SIGINT
 #set name for this runner as the hostname
 ACTIONS_RUNNER_INPUT_NAME=$HOSTNAME
 #get regsistration token for this runnner
-ACTIONS_RUNNER_INPUT_TOKEN="$(curl -sS --request POST --url "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/runners/registration-token" --header "authorization: Bearer ${GITHUB_TOKEN}"  --header 'content-type: application/json' | jq -r .token)"
+# ACTIONS_RUNNER_INPUT_TOKEN="$(curl -sS --request POST --url "${URL}/repos/${REPO_OWNER}/${REPO_NAME}/actions/runners/registration-token" --header "authorization: Bearer ${GITHUB_TOKEN}"  --header 'content-type: application/json' | jq -r .token)"
 #configure runner
+
+ACTIONS_RUNNER_INPUT_URL=https://developer.nasa.gov/javilla8/madi
+ACTIONS_RUNNER_INPUT_TOKEN=AAAARDYM7KHIFP22L633GVDFN56D2
+# ./config.sh --url https://developer.nasa.gov/javilla8/madi --token AAAARDYM7KHIFP22L633GVDFN56D2
+
 /runner/config.sh --unattended --replace --work "/tmp" --url "$ACTIONS_RUNNER_INPUT_URL" --token "$ACTIONS_RUNNER_INPUT_TOKEN"
 #start runner
 #https://github.com/actions/runner/issues/246#issuecomment-615293718

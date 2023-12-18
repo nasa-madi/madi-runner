@@ -1,0 +1,6 @@
+project_id = "hq-madi-dev-4ebd7d92"
+image      = "gcr.io/hq-madi-dev-4ebd7d92/runner:0.1"
+gh_token   = "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"
+repo_url   = "https://developer.nasa.gov/javilla8/madi"
+repo_name  = "madi"
+repo_owner = "javilla8"

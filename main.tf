@@ -14,9 +14,20 @@
  * limitations under the License.
  */
 
+provider "google" {
+  credentials = file("./google.credentials.json")
+  project     = var.project_id
+}
+
+provider "google-beta" {
+  credentials = file("./google.credentials.json")
+  project     = var.project_id
+}
+
 module "runner-mig-dind" {
-  source         = "../../modules/gh-runner-mig-container-vm"
-  create_network = true
+  source  = "terraform-google-modules/github-actions-runners/google//modules/gh-runner-mig-container-vm"
+  version = "3.1.2"
+  # create_network = true
   project_id     = var.project_id
   image          = var.image
   repo_name      = var.repo_name
@@ -24,4 +35,13 @@ module "runner-mig-dind" {
   repo_owner     = var.repo_owner
   gh_token       = var.gh_token
   dind           = true
+  subnet_name    = "hq-madi-vpc"
+  subnetwork_project = "hq-madi-anchor-proj-654cb100"
+  subnet_ip      = "10.24.80.0/24"
+  target_size    = 1
+
 }
+
+# module "runner-mig-dind" {
+#   source         = "../../modules/gh-runner-mig-container-vm"
+# }
